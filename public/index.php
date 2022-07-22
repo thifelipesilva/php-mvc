@@ -12,6 +12,14 @@ if (!array_key_exists($caminho, $routes)) {
     exit();
 }
 
+session_start();
+
+$ehRotaDeLogin = stripos($caminho, 'login');
+if (!isset($_SESSION['logado']) && $ehRotaDeLogin === false) {
+    header('Location: /login');
+    exit();
+}
+
 $classeControladora = $routes[$caminho]; //nome da classe
 
 $controlador = new $classeControladora(); //instanciando uma classe atrave de uma string

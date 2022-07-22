@@ -23,7 +23,9 @@ class RealizarLogin
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
         if (is_null($email) || $email === false) {
-            echo 'E-mail inválido';
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'E-mail inválido';
+            header('Location: /login');
             return;
         }
 
@@ -34,11 +36,13 @@ class RealizarLogin
         $usuario = $this->repositorioDeUsuario->findOneBy(['email' => $email]);
         
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
-            echo 'E-mail ou senha inválido';
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'E-mail ou Senha inválido';
+            header('Location: /login');
             return;
         }
         
-
+        $_SESSION['logado'] = true;
         header('Location: /listar-cursos');
     }
 }
